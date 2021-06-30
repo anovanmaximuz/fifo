@@ -8,7 +8,7 @@
             "email": "anovanmaximuz@gmail.com"
         }
     ],
-    "minimum-stability": "dev",
+    "minimum-stability": "1.0",
     "require": {
         "php": ">=7.3.0",
         "ext-mysqli":"*",
