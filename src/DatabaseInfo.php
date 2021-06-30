@@ -12,7 +12,7 @@
  * @support  check
  */
 
-namespace Kecipir\Exceptions;
+namespace Kecipir;
 
 class DatabaseInfo extends \mysqli_sql_exception{
     

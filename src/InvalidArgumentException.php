@@ -12,7 +12,7 @@
  * @support  check
  */
 
-namespace Kecipir\Exceptions;
+namespace Kecipir;
 
 class InvalidArgumentException extends \InvalidArgumentException{
     

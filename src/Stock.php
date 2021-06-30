@@ -14,9 +14,9 @@
 
 namespace Kecipir;
 
-use Kecipir\Exceptions\InvalidArgumentException;
-use Kecipir\Database\Model as Database;
-use Kecipir\Supports\DotEnv;
+use Kecipir\InvalidArgumentException;
+use Kecipir\Model as Database;
+use Kecipir\DotEnv;
 
 (new DotEnv(__DIR__ . '/.env'))->load();
 

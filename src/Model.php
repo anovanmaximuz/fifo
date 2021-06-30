@@ -12,9 +12,9 @@
  * @support  check
  */
 
-namespace Kecipir\Database;
+namespace Kecipir;
 
-use Kecipir\Supports\DotEnv;
+use Kecipir\DotEnv;
 
 (new DotEnv(__DIR__ . '/.env'))->load();
 
