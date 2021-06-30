@@ -12,5 +12,11 @@
         "php": ">=7.3.0",
         "ext-mysqli":"*",
         "ext-json": "*"
+    },
+    "autoload": {
+        "psr-4": {
+            "Kecipir\\": "src/",
+            "Vendor\\Kecipir\\": ""
+        }
     }
 }
