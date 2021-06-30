@@ -15,8 +15,8 @@
     },
     "license": "MIT",
     "autoload": {
-        "psr-4": {
-            "Kecipir\\Fifo\\": "src/"
+        "psr-4": { 
+            "Kecipir\\": "src/"
         },
         "files": ["src/Fifo.php"]
     },
