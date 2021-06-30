@@ -1,6 +1,6 @@
 {
     "name": "kecipir/fifo",
-    "description": "FIFO system for stock trasactions",
+    "description": "FIFO system",
     "type": "library",
     "authors": [
         {
@@ -10,13 +10,14 @@
     ],    
     "require": {
         "php": ">=7.3.0",
-        "ext-mysqli":"*",
-        "ext-json": "*"
+        "ext-mysqli": "*",
+        "ext-json": "^1.5"
     },
+    "license": "MIT",
     "autoload": {
         "psr-4": {
-            "Kecipir\\": "src/",
-            "Vendor\\Kecipir\\": ""
+            "Kecipir\\Fifo\\": "src/"
         }
-    }
+    },
+    "minimum-stability": "dev"
 }
