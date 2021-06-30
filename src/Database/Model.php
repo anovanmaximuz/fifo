@@ -18,14 +18,14 @@ use Kecipir\Supports\DotEnv;
 
 (new DotEnv(__DIR__ . '/.env'))->load();
 
-class Model extends \mysqli{
+class Model{
     
     public $conn;
 
     public function connectMysql()
     {        
     
-        $this->conn = new \mysqli(getenv("DB_HOST"), getenv("DB_USER"), getenv("DB_PASSWORD"), getenv("DB_DATABASE"), getenv("DB_USER"));
+        $this->conn = new mysqli(getenv("DB_HOST"), getenv("DB_USER"), getenv("DB_PASSWORD"), getenv("DB_DATABASE"), getenv("DB_USER"));
         
         
         if ($this->conn->connect_error) {
