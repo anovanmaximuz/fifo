@@ -15,6 +15,7 @@
 namespace Kecipir;
 
 use Kecipir\Stock as Stock;
+use Kecipir\Database\Model as Database;
 
 class Fifo{
 
@@ -81,7 +82,7 @@ class Fifo{
      */
     public static function check($tetxt){
         echo $tetxt;
-        $db = new   \Kecipir\Database\Model;
+        $db = new  Database;
         return $db->connectMysql();
     }
 
