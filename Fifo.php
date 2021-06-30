@@ -27,4 +27,14 @@ class Fifo{
         return  Stock::addTransaction($id_harvest, $qty, $trx_type, $flow);
     }
 
+    /**
+     * ApiBase getter
+     *
+     * @return string
+     */
+    public static function check($tetxt){
+        return  $tetxt;
+    }
+
+
 }
