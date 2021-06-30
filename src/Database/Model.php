@@ -22,20 +22,22 @@ class Model{
     
     public $conn;
 
-    public function connectMysql()
+    public static function connectMysql()
     {        
     
-        $this->conn = new mysqli(getenv("DB_HOST"), getenv("DB_USER"), getenv("DB_PASSWORD"), getenv("DB_DATABASE"), getenv("DB_USER"));
+        $connect = new mysqli(getenv("DB_HOST"), getenv("DB_USER"), getenv("DB_PASSWORD"), getenv("DB_DATABASE"), getenv("DB_USER"));
         
         
-        if ($this->conn->connect_error) {
-            error_log('Connect Error (' . $this->conn->connect_errno . ') ' . $this->conn->connect_error);
-            die('Connect Error (' . $this->conn->connect_errno . ') ' . $this->conn->connect_error);            
+        if ($connect->connect_error) {
+            error_log('Connect Error (' . $connect->connect_errno . ') ' . $connect->connect_error);
+            die('Connect Error (' . $connect->connect_errno . ') ' . $connect->connect_error);            
         }else{
             echo "ok connect";
         }
         
-        $this->conn->set_charset("utf8");
+        $connect->set_charset("utf8");
+
+        return $connect;
     }
 
     public function runTransaction($arrayFields, $table, $model, $where, $query=false){ 

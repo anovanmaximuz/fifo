@@ -82,8 +82,7 @@ class Fifo{
      */
     public static function check($tetxt){
         echo $tetxt;
-        $db = new  Database;
-        return $db->connectMysql();
+        return Database::connectMysql();
     }
 
 
