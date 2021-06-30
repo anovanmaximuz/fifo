@@ -14,27 +14,147 @@
 
 namespace Kecipir\Database;
 
-use Kecipir\DotEnv;
+use Kecipir\Supports\DotEnv;
 
 (new DotEnv(__DIR__ . '/.env'))->load();
 
-echo getenv('APP_ENV');
-class Model{
+class Model extends \mysqli{
     
-    protected $conn;
-       
-    public function loadConnection()
+    public $conn;
+
+    public function connectMysql()
     {        
     
-        $this->conn = new mysqli(getenv("DB_HOST"), getenv("DB_USER"), getenv("DB_PASSWORD"), getenv("DB_DATABASE"), getenv("DB_PORT"));
+        $this->conn = new \mysqli(getenv("DB_HOST"), getenv("DB_USER"), getenv("DB_PASSWORD"), getenv("DB_DATABASE"), getenv("DB_USER"));
         
         
         if ($this->conn->connect_error) {
             error_log('Connect Error (' . $this->conn->connect_errno . ') ' . $this->conn->connect_error);
-            die('Connect Error (' . $this->conn->connect_errno . ') ' . $this->conn->connect_error);
+            die('Connect Error (' . $this->conn->connect_errno . ') ' . $this->conn->connect_error);            
+        }else{
+            echo "ok connect";
         }
         
         $this->conn->set_charset("utf8");
+    }
+
+    public function runTransaction($arrayFields, $table, $model, $where, $query=false){ 
+        if($query!=false){
+            $sqlInsert = $query;
+        }else{
+            $sqlInsert = $this->createQuery($arrayFields,$table,$model,$where);
+            
+        }
+        
+        $result = $this->conn->query($sqlInsert);
+        if($result){
+            if($this->conn->affected_rows > 0) {
+                return true;
+            }else{
+                return false;
+            }
+        }else{
+            return false;
+        } 
+    }
+
+    # createQuery($query,'tbl_nama','update',array('freequery'=>"dasdsa d"));
+    protected function createQuery($arrays, $table, $action = 'insert', $where = array())
+    {
+        $q   = '';
+        $num = 0;
+        if (is_array($arrays)) {
+            foreach ($arrays as $key => $value) {
+                $q .= "$key ='$value'" . ((count($arrays) == $num + 1) ? '' : ',');
+                $num++;
+            }
+        }
+        
+        if ($action == 'insert') {
+            return 'INSERT INTO ' . $table . ' SET ' . $q;
+        } else if ($action == 'delete') {
+            $c  = '';
+            $no = 0;
+            foreach ($where as $key => $value) {
+                $c .= (($no == 0) ? '' : ' AND ');
+                $c .= "$key ='$value'";                
+                $no++;
+            }
+            return 'DELETE FROM ' . $table . ' WHERE ' . $c;
+        } else if ($action == 'update') {
+            if (count($where) != 0) {
+                if (isset($where['freequery'])) {
+                    return 'UPDATE ' . $table . ' SET ' . $q . ' WHERE ' . $where['freequery'];
+                } else {
+                    $c  = '';
+                    $no = 0;
+                    foreach ($where as $key => $value) {
+                        $c .= (($no == 0) ? '' : ' AND ');
+                        $c .= "$key ='$value'";
+                        $no++;
+                    }
+                    return 'UPDATE ' . $table . ' SET ' . $q . ' WHERE ' . $c;
+                }
+            } else {
+                return 'UPDATE ' . $table . ' SET ' . $q;
+            }
+        }
+        
+    }
+
+    protected function sqlBreak($table, $fields, $qWhere, $qSort, $offset, $limit, $fetchone = false)
+    {
+        if (!$fetchone) {
+            $sql = sprintf("SELECT 
+                        %s 
+                    FROM 
+                        %s
+                    WHERE  %s 
+                    ORDER BY
+                        %s
+                    LIMIT 
+                        %d,%d", implode(',', $fields), $table, $qWhere, $qSort, $offset, $limit);
+        } else {
+            $sql = sprintf("SELECT 
+                    %s 
+                FROM 
+                    %s
+                WHERE  %s 
+                ORDER BY
+                    %s", implode(',', $fields), $table, $qWhere, $qSort);
+        }
+        return $sql;
+    }
+    
+
+    public function getAll($query)
+    {
+        $result = $this->conn->query($query); 
+
+        if($result){
+            if($this->conn->affected_rows != 0) {
+                $data = array();
+                while ($row = $result->fetch_assoc()) {
+                    $data[] = $row;
+                }
+                return (count($data)>0) ? $data : false;
+            }else{
+                return false;
+            }
+        }else{
+            return false;
+        }
+    }
+
+    public function getOne($query)
+    {
+        $result = $this->conn->query($query);
+        
+        if ($result) {
+            return $result->fetch_assoc();            
+        } else {
+            return false;
+        }
     }
     
 }

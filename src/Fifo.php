@@ -19,7 +19,54 @@ use Kecipir\Stock as Stock;
 class Fifo{
 
     /**
-     * ApiBase getter
+     * Selling
+     *
+     * @return string
+     */
+    public static function selling($id_harvest, $qty){
+        return  Stock::addTransaction($id_harvest, $qty, "SELLING", "OUT");
+    }
+
+    /**
+     * Return
+     *
+     * @return string
+     */
+    public static function return($id_harvest, $qty){
+        return  Stock::addTransaction($id_harvest, $qty, "RETURN", "IN");
+    }
+
+    /**
+     * Correction
+     *
+     * @return string
+     */
+    public static function correction($id_harvest, $qty, $flow){
+        return  Stock::addTransaction($id_harvest, $qty, "CORRECTION", $flow);
+    }
+
+
+    /**
+     * Expired
+     *
+     * @return string
+     */
+    public static function expired($id_harvest, $qty){
+        return  Stock::addTransaction($id_harvest, $qty, "EXPIRED", "OUT");
+    }
+
+     /**
+     * Expired
+     *
+     * @return string
+     */
+    public static function buying($id_harvest, $qty){
+        return  Stock::addTransaction($id_harvest, $qty, "BUYING", "IN");
+    }
+
+
+    /**
+     * Swapp / tukar guling
      *
      * @return string
      */
@@ -33,7 +80,9 @@ class Fifo{
      * @return string
      */
     public static function check($tetxt){
-        return  $tetxt;
+        echo $tetxt;
+        $db = new   \Kecipir\Database\Model;
+        return $db->connectMysql();
     }
 
 

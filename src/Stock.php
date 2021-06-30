@@ -15,15 +15,27 @@
 namespace Kecipir;
 
 use Kecipir\Exceptions\InvalidArgumentException;
+use Kecipir\Database\Model as Database;
+use Kecipir\Supports\DotEnv;
+
+(new DotEnv(__DIR__ . '/.env'))->load();
 
 class Stock
 {
+
+    protected $table_fifo = "fifo";
+
+    function __construct()
+    {
+        $this->table_fifo = getenv("TABLE_FIFO");
+    }
+
     /**
      * Available transaction type
      *
      * @return array
      */
-    public static function transactionType()
+    public  function transactionType()
     {
         return ["SELLING","RETURN","CORRECTION","EXPIRED","BUYING","BUYING","SWAP"];
     }
@@ -33,7 +45,7 @@ class Stock
      *
      * @return array
      */
-    public static function flowType()
+    public function flowType()
     {
         return ["IN","OUT"];
     }
@@ -45,10 +57,10 @@ class Stock
      *
      * @return void
      */
-    public static function validateTransactionType($transaction_type = null)
+    public  function validateTransactionType($transaction_type = null)
     {
-        if (!in_array($transaction_type, self::transactionType())) {
-            $msg = "Transaction type is invalid. Available transactions: ".implode(",", self::transactionType());
+        if (!in_array($transaction_type, $this->transactionType())) {
+            $msg = "Transaction type is invalid. Available transactions: ".implode(",", $this->transactionType());
             throw new InvalidArgumentException($msg);
         }
     }
@@ -60,10 +72,10 @@ class Stock
      *
      * @return void
      */
-    public static function validateFlowType($flow_type = null)
+    public  function validateFlowType($flow_type = null)
     {
-        if (!in_array($flow_type, self::flowType())) {
-            $msg = "Flow type is invalid. Available flows: ".implode(",", self::flowType());
+        if (!in_array($flow_type, $this->flowType())) {
+            $msg = "Flow type is invalid. Available flows: ".implode(",", $this->flowType());
             throw new InvalidArgumentException($msg);
         }
     }
@@ -81,10 +93,12 @@ class Stock
      * ]
      * @throws Exceptions\StockException
      */
-    public static function getBalance($id_harvest = null)
+    public  function getBalance($id_harvest)
     {
-        self::validateTransactionType($id_harvest);
-        //...
+        $this->validateTransactionType($id_harvest);
+        $query = "SELECT * FROM ".$this->table_fifo." WHERE id_harvest= ".$id_harvest;
+        $db = new Database;
+        return $db->getOne($query);
     }
 
 
@@ -103,10 +117,10 @@ class Stock
      * ]
      * @throws Exceptions\StockException
      */
-    public static function addTransaction($id_harvest, $qty, $transaction_type, $flow_type)
+    public  function addTransaction($id_harvest, $qty, $transaction_type, $flow_type)
     {
-        self::validateTransactionType($transaction_type);
-        self::validateFlowType($flow_type);
+        $this->validateTransactionType($transaction_type);
+        $this->validateFlowType($flow_type);
         //...
     }
 }

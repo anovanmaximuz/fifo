@@ -12,7 +12,7 @@
  * @support  check
  */
 
-namespace Kecipir;
+namespace Kecipir\Supports;
 
 class DotEnv
 {
