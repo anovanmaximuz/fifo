@@ -1,0 +1,17 @@
+{
+    "name": "kecipir/fifo",
+    "description": "FIFO system for stock trasactions",
+    "type": "library",
+    "authors": [
+        {
+            "name": "Ano Van",
+            "email": "anovanmaximuz@gmail.com"
+        }
+    ],
+    "minimum-stability": "dev",
+    "require": {
+        "php": ">=7.3.0",
+        "ext-mysqli":"*",
+        "ext-json": "*"
+    }
+}
