@@ -17,6 +17,7 @@ namespace Kecipir;
 use Kecipir\Stock as Stock;
 use Kecipir\Model as Database;
 
+
 class Fifo{
 
     /**

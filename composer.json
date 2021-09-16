@@ -18,7 +18,7 @@
         "psr-4": { 
             "Kecipir\\Fifo\\": "src/"
         },
-        "files": ["src/Fifo.php","src/*"]
+        "files": ["src/Fifo.php"]
     },
     "minimum-stability": "dev"
 }

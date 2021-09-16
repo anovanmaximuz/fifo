@@ -23,7 +23,7 @@ use Kecipir\DotEnv;
 class Stock
 {
 
-    protected $table_fifo = "fifo";
+    protected $table_fifo = "fifo_stock";
 
     function __construct()
     {
