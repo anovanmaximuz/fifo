@@ -15,6 +15,7 @@
 namespace Kecipir;
 
 use Kecipir\DotEnv;
+use Kecipir\Mysqli;
 
 (new DotEnv(__DIR__ . '/.env'))->load();
 

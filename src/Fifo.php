@@ -14,11 +14,19 @@
 
 namespace Kecipir;
 
-use Kecipir\Stock as Stock;
-use Kecipir\Model as Database;
-
+use Model as Database;
 
 class Fifo{
+    
+    /**
+     * ApiBase check
+     *
+     * @return string
+     */
+    public static function check($tetxt){
+        echo $tetxt;
+        return Database::connectMysql();
+    }
 
     /**
      * Selling
@@ -76,15 +84,7 @@ class Fifo{
         return  Stock::addTransaction($id_harvest, $qty, $trx_type, $flow);
     }
 
-    /**
-     * ApiBase getter
-     *
-     * @return string
-     */
-    public static function check($tetxt){
-        echo $tetxt;
-        return Database::connectMysql();
-    }
+    
 
 
 }
