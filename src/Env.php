@@ -14,7 +14,7 @@
 
 namespace Kecipir;
 
-class DotEnv
+class Env
 {
     /**
      * The directory where the .env file can be located.

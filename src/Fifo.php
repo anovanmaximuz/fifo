@@ -14,18 +14,20 @@
 
 namespace Kecipir;
 
-use Model as Database;
+use Kecipir\Env;
+use Kecipir\Database\Model;
 
 class Fifo{
     
+
     /**
      * ApiBase check
      *
      * @return string
      */
     public static function check($tetxt){
-        echo $tetxt;
-        return Database::connectMysql();
+        $mode = new Model();
+        return  $mode->getAll("select * from rkp_penjualan limit 20");
     }
 
     /**

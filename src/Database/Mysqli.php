@@ -1,6 +1,6 @@
 <?php 
 
-namespace Kecipir;
+namespace Kecipir\Database;
 
 class Mysqli extends \mysqli{
 

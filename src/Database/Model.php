@@ -12,33 +12,30 @@
  * @support  check
  */
 
-namespace Kecipir;
+namespace Kecipir\Database;
 
-use Kecipir\DotEnv;
-use Kecipir\Mysqli;
+use Kecipir\Env;
+use Kecipir\Database\Mysqli;
 
-(new DotEnv(__DIR__ . '/.env'))->load();
+(new Env(BASE_PATH . '/.env'))->load();
 
 class Model{
     
-    public $conn;
+    private $conn;
 
-    public static function connectMysql()
-    {        
-    
-        $connect = new mysqli(getenv("DB_HOST"), getenv("DB_USER"), getenv("DB_PASSWORD"), getenv("DB_DATABASE"), getenv("DB_USER"));
+    function __construct(){     
+        
+        $this->conn = new mysqli(getenv("DB_HOST"), getenv("DB_USER"), getenv("DB_PASSWORD"), getenv("DB_DATABASE"), getenv("DB_PORT"));
         
         
-        if ($connect->connect_error) {
-            error_log('Connect Error (' . $connect->connect_errno . ') ' . $connect->connect_error);
-            die('Connect Error (' . $connect->connect_errno . ') ' . $connect->connect_error);            
+        if ($this->conn->connect_error) {
+            error_log('Connect Error (' . $this->conn->connect_errno . ') ' . $this->conn->connect_error);
+            die('Connect Error (' . $this->conn->connect_errno . ') ' . $this->conn->connect_error);            
         }else{
-            echo "ok connect";
+            
         }
         
-        $connect->set_charset("utf8");
-
-        return $connect;
+        $this->conn->set_charset("utf8");
     }
 
     public function runTransaction($arrayFields, $table, $model, $where, $query=false){ 
@@ -46,16 +43,11 @@ class Model{
             $sqlInsert = $query;
         }else{
             $sqlInsert = $this->createQuery($arrayFields,$table,$model,$where);
-            
         }
         
         $result = $this->conn->query($sqlInsert);
-        if($result){
-            if($this->conn->affected_rows > 0) {
-                return true;
-            }else{
-                return false;
-            }
+        if($result && $this->conn->affected_rows > 0){
+            return true;
         }else{
             return false;
         } 
@@ -130,20 +122,14 @@ class Model{
     }
     
 
-    public function getAll($query)
-    {
-        $result = $this->conn->query($query); 
-
-        if($result){
-            if($this->conn->affected_rows != 0) {
-                $data = array();
-                while ($row = $result->fetch_assoc()) {
-                    $data[] = $row;
-                }
-                return (count($data)>0) ? $data : false;
-            }else{
-                return false;
+    public function getAll($query){
+        $result = $this->conn->query($query);
+        if($result && $this->conn->affected_rows != 0){
+            $data = array();
+            while ($row = $result->fetch_assoc()) {
+                $data[] = $row;
             }
+            return (count($data)>0) ? $data : false;
         }else{
             return false;
         }
